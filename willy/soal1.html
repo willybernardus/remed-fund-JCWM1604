@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soal 1</title>
+</head>
+
+<body>
+    <h1>Masukan kata: </h1>
+    <br>
+    <input type="text" placeholder="input kata" id="inputkata">
+    <br><br>
+    <input type="button" value="Hitung Vokal" onclick="hitungVokal()">
+    <input type="button" value="Huruf Vokal" onclick="hurufVokal()">
+    <input type="button" value="Tanpa Vokal" onclick="tanpaVokal()">
+    <h2></h2>
+
+</body>
+<script>
+
+    function hitungVokal() {
+        var kata = document.getElementById('inputkata').value.toLowerCase()
+        let a, i, u, e, o;
+        let result = 0
+        if (kata.split('').includes('a')) {
+            a = 1
+        } else {
+            a = 0
+        }
+        if (kata.split('').includes('i')) {
+            i = 1
+        } else {
+            i = 0
+        }
+        if (kata.split('').includes('u')) {
+            u = 1
+        } else {
+            u = 0
+        }
+        if (kata.split('').includes('e')) {
+            e = 1
+        } else {
+            e = 0
+        }
+        if (kata.split('').includes('o')) {
+            o = 1
+        } else {
+            o = 0
+        }
+
+        if (!kata) {
+            alert('Input tidak boleh kosong!')
+        } else {
+            result = `Hasil: ada ${a + i + u + e + o} huruf vokal berdampingan`
+            document.getElementsByTagName('h2')[0].innerHTML = result
+        }
+    }
+
+    function hurufVokal() {
+        var kata = document.getElementById('inputkata').value.toLowerCase().split('')
+        // for (let i = 0; i < kata.length; i++) {
+        //     result
+        // }
+        var result = `Huruf vokal: ${kata.includes('a,i,u,e,o', 0)}`
+
+        document.getElementsByTagName('h2')[0].innerHTML = result
+    }
+
+    function tanpaVokal() {
+        var kata = document.getElementById('inputkata').value.toLowerCase()
+        var result = `Tanpa vokal: ${kata.replace(/[aiueo]/ig, (m, i) => i = '')}`
+        if (!kata) {
+            alert('Input tidak boleh kosong!')
+        } else {
+            document.getElementsByTagName('h2')[0].innerHTML = result
+        }
+    }
+
+</script>
+
+</html>

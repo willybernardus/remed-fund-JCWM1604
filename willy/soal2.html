@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soal 2</title>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <form action="">
+        <h1>Form Product</h1>
+        <br><br>
+        <input type="text" placeholder="name" id="inputnama">
+        <input type="text" placeholder="price" id="inputprice">
+        <input type="radio" name='category'> Food
+        <input type="radio" name='category'> Drink
+        <input type="radio" name='category'> Others
+        <br><br>
+        <input type="button" value="submit" onclick="submitData()">
+        <br><br>
+        <table>
+            <thead>
+                <tr>
+                    <th>NO</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Category</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="renderData">
+
+            </tbody>
+        </table>
+    </form>
+</body>
+<script>
+    var arrProduct = [
+        { no: 1, name: 'Coca Cola', price: '5000', category: 'Drink' },
+        { no: 2, name: 'Beng-Beng', price: '4500', category: 'Food' },
+        { no: 3, name: 'Fanta', price: '3500', category: 'Drink' },
+
+    ];
+
+    indexEdit = -1
+
+    function printData(arr) {
+        let result = arr.map((val, index) => {
+            if (indexEdit == index) {
+                return `<tr>
+                <td>${index + 1}</td>
+                <td><input type="text" placeholder="masukan nama barang" value="${val.name}" id="inputEditNama${index}"></td>
+                <td><input type="text" placeholder="masukan harga barang" value="${val.price}" id="inputEditPrice${index}"></td>
+                <td>
+                <input type="radio" name="inputEditCategory${index}" value="${val.category}">
+                <label for="food">Food</label>
+                <input type="radio" name="inputEditCategory" value="${val.category}">
+                <label for="drink">Drink</label>
+                <input type="radio" name="inputEditCategory" value="${val.category}">
+                <label for="others">Others</label>
+                </td>
+                <td>
+                    <input type="button" value="Save" onclick="onSaveClick(${val.no})">
+                    <input type="button" value="Cancel" onclick="onCancelClick()">
+                 </td>
+            </tr>`
+
+            }
+            return `<tr>
+                <td>${index + 1}</td>
+                <td>${val.name}</td>
+                <td>${val.price}</td>
+                <td>${val.category}</td>
+                <td>
+                    <input type="button" value="Edit" onclick="onEditClick(${index})">
+                    <input type="button" value="Delete" onclick="onDeleteClick(${index})">
+                 </td>
+                 
+            </tr>`
+        })
+
+        document.getElementById('renderData').innerHTML = result.join('')
+    }
+    printData(arrProduct)
+
+    function onDeleteClick(index) {
+        arrProduct.splice(index, 1)
+        printData(arrProduct)
+    }
+
+    function onEditClick(index) {
+        indexEdit = index
+        printData(arrProduct)
+    }
+
+    function onCancelClick() {
+        indexEdit = -1
+        printData(arrProduct)
+    }
+
+    function onSaveClick(id) {
+        var editNama = document.getElementById('inputEditNama' + indexEdit).value
+        var editPrice = document.getElementById('inputEditPrice' + indexEdit).value
+        var editCategory = document.getElementsByName('inputEditCategory' + indexEdit).checked
+        let indexEd = arrProduct.findIndex((val) => {
+            return val.no == id
+        })
+        arrProduct[indexEd].name = editNama
+        arrProduct[indexEd].price = editPrice
+        arrProduct[indexEd].category = editCategory
+        indexEdit = -1
+        printData(arrProduct)
+    }
+
+    function submitData() {
+        let inputnama = document.getElementById('inputnama').value
+        let inputprice = document.getElementById('inputprice').value
+        let category
+        let kiri = document.getElementsByName('category')[0].checked
+        let tengah = document.getElementsByName('category')[1].checked
+        let kanan = document.getElementsByName('category')[2].checked
+        if (kiri) {
+            category = 'Food'
+        } else if (tengah) {
+            category = 'Drink'
+        } else {
+            category = 'Others'
+        }
+
+
+        if (inputnama && inputprice && category) {
+            var result = { name: inputnama, price: inputprice, category: category }
+            arrProduct.push(result)
+            printData(arrProduct)
+
+        } else {
+            alert('Data yang anda masukan kurang!')
+        }
+
+        // Membuat form jadi reset lagi
+        document.getElementById('inputnama').value = ''
+        document.getElementById('inputprice').value = ''
+
+        document.getElementsByName('category')[0].checked = false
+        document.getElementsByName('category')[1].checked = false
+        document.getElementsByName('category')[2].checked = false
+    }
+
+</script>
+
+</html>
